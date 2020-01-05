@@ -6,10 +6,11 @@ import CustomButton from "../CustomButton/CustomButton";
 import CartItem from "../CartItem/CartItem";
 import {selectCartItems} from "../../store/Cart/CartSelectors";
 import {createStructuredSelector} from "reselect";
+import {toggleCartHidden} from "../../store/Cart/CartActions";
 
 import './CartDropdown.scss'
 
-const CartDropdown = ({cartItems, history}) => (
+const CartDropdown = ({cartItems, history, dispatch}) => (
     <div className='cart-dropdown'>
         <div className='cart-items'>
             {cartItems.length ? (
@@ -20,12 +21,17 @@ const CartDropdown = ({cartItems, history}) => (
                 <span className='empty-message'>Your cart is empty</span>
             )}
         </div>
-        <CustomButton onClick={() => history.push('/checkout')}>Go to checkout</CustomButton>
+        <CustomButton onClick={() => {
+            history.push('/checkout')
+            dispatch(toggleCartHidden())
+        }}>Go to checkout</CustomButton>
     </div>
 )
 
 const mapStateToProps = createStructuredSelector({
     cartItems: selectCartItems
 })
+
+
 
 export default withRouter(connect(mapStateToProps)(CartDropdown))
