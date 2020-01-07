@@ -9,11 +9,11 @@ import {selectCollectionForPreview} from "../../store/Shop/ShopSelectors";
 import {CollectionOverviewContainer} from "./CollectionOverviewStyles";
 
 const CollectionsOverview = ({collections}) => (
-    <CollectionsOverview>
+    <CollectionOverviewContainer>
         {collections.map(({id, ...otherCollectionProps}) => (
             <CollectionPreview key={id} {...otherCollectionProps} />
         ))}
-    </CollectionsOverview>
+    </CollectionOverviewContainer>
 )
 
 const mapStateToProps = createStructuredSelector({
