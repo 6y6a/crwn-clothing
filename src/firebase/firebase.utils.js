@@ -42,6 +42,18 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
     return userRef
 }
 
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+    const collectionRef = firestore.collection(collectionKey)
+
+    const batch = firestore.batch()
+    objectsToAdd.forEach(obj => {
+        const newDocRef = collectionRef.doc()
+        batch.set(newDocRef, obj)
+    })
+
+    return await batch.commit()
+}
+
 const provider = new firebase.auth.GoogleAuthProvider()
 provider.setCustomParameters({prompt: 'select_account'})
 export const signInWithGoogle = () => auth.signInWithPopup(provider)
