@@ -1,5 +1,4 @@
 import React from "react";
-import {Link} from 'react-router-dom'
 import {auth} from "../../firebase/firebase.utils";
 import {connect} from 'react-redux'
 
@@ -10,7 +9,7 @@ import {createStructuredSelector} from "reselect";
 import {selectCartHidden} from "../../store/Cart/CartSelectors";
 import {selectCurrentUser} from "../../store/User/UserSelector";
 
-import {HeaderContainer, LogoContainer, OptionsContainer, OptionDiv, OptionLink} from "./HeaderStyles";
+import {HeaderContainer, LogoContainer, OptionsContainer, OptionLink} from "./HeaderStyles";
 
 const Header = ({currentUser, hidden}) => (
     <HeaderContainer>
@@ -21,7 +20,7 @@ const Header = ({currentUser, hidden}) => (
             <OptionLink className="option" to='/shop'>Shop</OptionLink>
             <OptionLink className="option" to='/contact'>Contact</OptionLink>
             {currentUser ?
-                <OptionDiv className='option' onClick={() => auth.signOut()}>Sign out</OptionDiv>
+                <OptionLink as='div' className='option' onClick={() => auth.signOut()}>Sign out</OptionLink>
                 :
                 <OptionLink className="option" to='/signin'>Sign In</OptionLink>
             }
