@@ -1,5 +1,4 @@
 import React from "react";
-import './MenuItem.scss'
 import {withRouter} from 'react-router-dom'
 
 import {MenuContent, MenuTitle, MenuSubtitle, MenuItemContainer, BackgroundImage} from "./MenuItemStyles";
