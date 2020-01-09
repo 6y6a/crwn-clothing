@@ -7,7 +7,7 @@ import {updateCollections} from "../../store/Shop/ShopActions";
 import WithSpinner from "../../components/WithSpinner/WithSpinner";
 import {fetchCollectionsStartAsync} from "../../store/Shop/ShopActions";
 import {createStructuredSelector} from "reselect";
-import {selectCollectionFetching} from "../../store/Shop/ShopSelectors";
+import {selectCollectionFetching, selectIsCollectionLoaded} from "../../store/Shop/ShopSelectors";
 
 const CollectionOverviewWithSpinner = WithSpinner(CollectionsOverview)
 const CollectionPageWithSpinner = WithSpinner(CollectionPage)
@@ -20,7 +20,7 @@ class ShopPage extends Component {
     }
 
     render() {
-        const {match, isCollectionFetching} = this.props
+        const {match, isCollectionFetching, isCollectionLoaded} = this.props
 
         return (
             <div>
@@ -31,8 +31,7 @@ class ShopPage extends Component {
                 />
                 <Route
                     path={`${match.path}/:collectionId`}
-                    component={CollectionPage}
-                    render={(props) => <CollectionPageWithSpinner isLoading={isCollectionFetching} {...props}/>}
+                    render={(props) => <CollectionPageWithSpinner isLoading={!isCollectionLoaded} {...props}/>}
                 />
             </div>
         )
@@ -40,7 +39,8 @@ class ShopPage extends Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-    isCollectionFetching: selectCollectionFetching
+    isCollectionFetching: selectCollectionFetching,
+    isCollectionLoaded: selectIsCollectionLoaded
 })
 
 const mapDispatchToProps = dispatch => ({

@@ -15,10 +15,15 @@ export const selectCollectionForPreview = createSelector(
 export const selectCollection = collectionUrlParam =>
     createSelector(
         [selectCollections],
-        (collection => collection ? collection[collectionUrlParam] : null)
+        collection => collection ? collection[collectionUrlParam] : null
     )
 
 export const selectCollectionFetching = createSelector(
     [selectShop],
     shop => shop.isFetching
+)
+
+export const selectIsCollectionLoaded = createSelector(
+    [selectShop],
+    shop => !!shop.collections
 )
