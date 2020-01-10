@@ -3,27 +3,33 @@ import {googleProvider, auth, createUserProfileDocument} from "../../firebase/fi
 
 import UserActionTypes from "./UserTypes";
 
-import {googleSignInSuccess, googleSignInFailure, emailSignInSuccess, emailSignInFailure} from "./UserActions";
+import {signInSuccess, signInFailure} from "./UserActions";
+
+function* getUserFromUserAuth(userAuth) {
+    try {
+        const userRef = yield call(createUserProfileDocument, userAuth)
+        const userSnapshot = yield userRef.get()
+        yield put(signInSuccess({id: userSnapshot.id, ...userSnapshot.data()}))
+    } catch (error) {
+        yield put(signInFailure(error))
+    }
+}
 
 export function* signInWithGoogle() {
     try {
         const {user} = yield auth.signInWithPopup(googleProvider)
-        const userRef = yield call(createUserProfileDocument, user)
-        const userSnapshot = yield userRef.get()
-        yield put(googleSignInSuccess({id: userSnapshot.id, ...userSnapshot.data() }))
+        yield getUserFromUserAuth(user)
     } catch (error) {
-        yield put(googleSignInFailure(error))
+        yield put(signInFailure(error))
     }
 }
 
 export function* signInWithEmail({payload: {email, password}}) {
     try {
         const {user} = yield auth.signInWithEmailAndPassword(email, password)
-        const userRef = yield call(createUserProfileDocument, user)
-        const userSnapshot = yield userRef.get()
-        yield put(emailSignInSuccess({id: userSnapshot.id, ...userSnapshot.data() }))
-    } catch(error) {
-       yield put(emailSignInFailure(error))
+        yield getUserFromUserAuth(user)
+    } catch (error) {
+        yield put(signInFailure(error))
     }
 }
 
