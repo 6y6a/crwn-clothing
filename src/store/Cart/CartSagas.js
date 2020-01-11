@@ -1,4 +1,4 @@
-import {all, call, takeLatest, put} from 'react-saga/effects'
+import {all, call, takeLatest, put} from 'redux-saga/effects'
 import UserActionTypes from "../User/UserTypes";
 import {clearCart} from "./CartActions";
 
