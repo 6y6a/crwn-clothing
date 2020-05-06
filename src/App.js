@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Route, Switch, Redirect} from 'react-router-dom'
 
 import './App.css';
@@ -16,36 +16,27 @@ import {selectCollectionForPreview} from "./store/Shop/ShopSelectors";
 import {checkUserSession} from "./store/User/UserActions";
 
 
-class App extends React.Component {
+const App = ({checkUserSession, currentUser}) => {
 
-    unsubscribeFromAuth = null
-
-    componentDidMount() {
-        const {checkUserSession} = this.props
+    useEffect(() => {
         checkUserSession()
-    }
+    }, [checkUserSession])
 
-    componentWillUnmount() {
-        this.unsubscribeFromAuth()
-    }
+    return (
+        <div>
+            <Header/>
 
-    render() {
-        return (
-            <div>
-                <Header/>
+            <Switch>
+                <Route exact path='/' component={Homepage}/>
+                <Route path='/shop' component={ShopPage}/>
+                <Route path='/checkout' component={CheckoutPage}/>
+                <Route path='/signin' render={() =>
+                    currentUser ? (<Redirect to='/'/>) : (<SignInAndSignUp/>)
+                }/>
+            </Switch>
 
-                <Switch>
-                    <Route exact path='/' component={Homepage}/>
-                    <Route path='/shop' component={ShopPage}/>
-                    <Route path='/checkout' component={CheckoutPage}/>
-                    <Route path='/signin' render={() =>
-                        this.props.currentUser ? (<Redirect to='/'/>) : (<SignInAndSignUp/>)
-                    }/>
-                </Switch>
-
-            </div>
-        );
-    }
+        </div>
+    );
 
 }
 
